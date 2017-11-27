@@ -14,17 +14,35 @@
 				<div class="row">
 					<div v-for="item in items" class="col-sm-4">
 						<div class="item">							
-							<img v-bind:src = "item.imgSrc" v-on:click="itemName(item.name)">
+							<img v-bind:src = "item.imgSrc">
 							<h3>{{item.name}}</h3>
 							<p class="desc">{{item.description}}</p>
-							<button v-on:click="orderThis(item)" v-if="item.stock > 0">Order {{item.name}}!</button>
+							<p>Price: ${{item.price}}</p>				
 							<p v-if="item.stock > 0">Ammount in Stock: {{item.stock}}</p>
 							<p v-if="item.stock <= 0" class="soldout">Out of Stock</p>
+							<button v-on:click="orderThis(item)" v-if="item.stock > 0">Add to Cart</button>
+							<button  v-if="item.stock <= 0" disabled="disabled">Add to Cart</button>
 						</div>
 					</div>
 			    </div>
    
-				<p v-if="cartItem > 0" class="cart">Items in Cart: {{cartItem}}</p>
+				<div v-if="cartItem > 0" class="cart">
+					<p>Items in Cart: {{cartItem}}</p>
+					<div class="cartheader">
+						<p>Item</p>
+						<p>Ammount ordered</p>
+						<p>Price per item</p>
+						<p>Subtotal</p>
+					</div>
+					<div class="cartitem" v-for="item in items">
+						<p>{{item.name}}</p>
+						<p>{{item.ordered}}</p>
+						<p>${{item.price}}</p>
+						<p>${{item.sub}}</p>
+					</div>
+				</div>
+				
+				
             </div>
         </div>
 
@@ -37,30 +55,34 @@
 
 					items : [
 						{name: 'Stitch',
-						stock: 2,
+						stock: 5,
+						ordered: 0,
+						price: 3.55,
+						sub: 0,
 						imgSrc: 'stitch.jpg',
 						description: "Small fluffy alien based in Hawaii"},
-						{name: 'Dory',
-						stock: 10,
-						imgSrc: 'dory.png',
-						description: "Its a fish. She forgets things"},
 						{name: 'Stitch',
-						stock: 5,
+						stock: 3,
+						ordered: 0,
+						price: 4.00,
+						sub: 0,
+						imgSrc: 'stitch.jpg',
+						description: "Small fluffy alien based in Hawaii"},
+						{name: 'Stitch',
+						stock: 10,
+						ordered: 0,
+						price: 5.65,
+						sub: 0,
 						imgSrc: 'stitch.jpg',
 						description: "Small fluffy alien based in Hawaii"}
 						]
 				},
 				methods : {
-					itemName(theName){
-						this.itemSelected = theName;
-					},
 					orderThis(theItem){
 						theItem.stock--;
 						this.cartItem++;
-					},
-					deleteThis(theItem){
-						this.cartItem -= theItem.ordered;
-						theItem.stock = -1;
+						theItem.ordered++;
+						theItem.sub = theItem.ordered * theItem.price;
 					}
 				}
             })

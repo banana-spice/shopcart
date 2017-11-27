@@ -13,3 +13,13 @@
 .soldout{
 	color: red;
 }
+.cartitem p, .cartheader p{
+	display: inline-block;
+	width: 20%;
+	padding: 5px;
+}
+.cartheader{
+	font-weight: bold;
+	font-size: .85em;
+	border-bottom: 1px solid black;
+}
