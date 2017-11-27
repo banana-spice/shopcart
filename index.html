@@ -8,20 +8,23 @@
         <script src="https://unpkg.com/vue/dist/vue.js"></script>
     </head>
     <body>
+		<div class="jumbotron"></div>
         <div class="container">
             <div id="app">
 				<div class="row">
-					<div v-for="item in items" v-if="item.ordered >= 0" class="col-sm-4">
-						<div class="item">
-						<p>{{item.name}}</p>
-						<img v-bind:src = "item.imgSrc" v-on:click="itemName(item.name)">
-						<button v-on:click="orderThis(item)">Order {{item.name}}!</button>
-						<p v-if="item.ordered > 0">Ammount Ordered: {{item.ordered}}</p>
+					<div v-for="item in items" class="col-sm-4">
+						<div class="item">							
+							<img v-bind:src = "item.imgSrc" v-on:click="itemName(item.name)">
+							<h3>{{item.name}}</h3>
+							<p class="desc">{{item.description}}</p>
+							<button v-on:click="orderThis(item)" v-if="item.stock > 0">Order {{item.name}}!</button>
+							<p v-if="item.stock > 0">Ammount in Stock: {{item.stock}}</p>
+							<p v-if="item.stock <= 0" class="soldout">Out of Stock</p>
 						</div>
 					</div>
 			    </div>
    
-				<p v-if="cartItem > 0">Items in Cart: {{cartItem}}</p>
+				<p v-if="cartItem > 0" class="cart">Items in Cart: {{cartItem}}</p>
             </div>
         </div>
 
@@ -31,17 +34,20 @@
                 el: "#app",
                 data: {
                     cartItem: 0,
-					itemSelected: "None",
+
 					items : [
 						{name: 'Stitch',
-						ordered: 0,
-						imgSrc: 'stitch.jpg'},
+						stock: 2,
+						imgSrc: 'stitch.jpg',
+						description: "Small fluffy alien based in Hawaii"},
 						{name: 'Dory',
-						ordered: 0,
-						imgSrc: 'dory.png'},
+						stock: 10,
+						imgSrc: 'dory.png',
+						description: "Its a fish. She forgets things"},
 						{name: 'Stitch',
-						ordered: 0,
-						imgSrc: 'stitch.jpg'}
+						stock: 5,
+						imgSrc: 'stitch.jpg',
+						description: "Small fluffy alien based in Hawaii"}
 						]
 				},
 				methods : {
@@ -49,12 +55,12 @@
 						this.itemSelected = theName;
 					},
 					orderThis(theItem){
-						theItem.ordered++;
+						theItem.stock--;
 						this.cartItem++;
 					},
 					deleteThis(theItem){
 						this.cartItem -= theItem.ordered;
-						theItem.ordered = -1;
+						theItem.stock = -1;
 					}
 				}
             })
