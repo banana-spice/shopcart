@@ -1,9 +1,63 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title></title>
-	</head>
-	<body>
-	</body>
+    <head>
+        <meta charset="utf-8">
+        <title>Vue Shopping Cart</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		<link rel="stylesheet" href="styles.css" >
+        <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <div id="app">
+				<div class="row">
+					<div v-for="item in items" v-if="item.ordered >= 0" class="col-sm-4">
+						<div class="item">
+						<p>{{item.name}}</p>
+						<img v-bind:src = "item.imgSrc" v-on:click="itemName(item.name)">
+						<button v-on:click="orderThis(item)">Order {{item.name}}!</button>
+						<p v-if="item.ordered > 0">Ammount Ordered: {{item.ordered}}</p>
+						</div>
+					</div>
+			    </div>
+   
+				<p v-if="cartItem > 0">Items in Cart: {{cartItem}}</p>
+            </div>
+        </div>
+
+        <!--script for cart-->
+        <script>
+            var app = new Vue({
+                el: "#app",
+                data: {
+                    cartItem: 0,
+					itemSelected: "None",
+					items : [
+						{name: 'Stitch',
+						ordered: 0,
+						imgSrc: 'stitch.jpg'},
+						{name: 'Dory',
+						ordered: 0,
+						imgSrc: 'dory.png'},
+						{name: 'Stitch',
+						ordered: 0,
+						imgSrc: 'stitch.jpg'}
+						]
+				},
+				methods : {
+					itemName(theName){
+						this.itemSelected = theName;
+					},
+					orderThis(theItem){
+						theItem.ordered++;
+						this.cartItem++;
+					},
+					deleteThis(theItem){
+						this.cartItem -= theItem.ordered;
+						theItem.ordered = -1;
+					}
+				}
+            })
+        </script>
+    </body>
 </html>
