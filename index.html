@@ -2,13 +2,18 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Vue Shopping Cart</title>
+        <title>PokéMart Cart</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 		<link rel="stylesheet" href="styles.css" >
         <script src="https://unpkg.com/vue/dist/vue.js"></script>
     </head>
     <body>
-		<div class="jumbotron"></div>
+		<div class="jumbotron">
+			<div class="container">
+				<img src="images/mart.png" alt="PokeMart" style="display: inline">
+				<h1 style="display: inline">PokéMart Cart</h1>
+			</div>
+		</div>
         <div class="container">
             <div id="app">
 				<div class="row">
@@ -27,19 +32,25 @@
 			    </div>
    
 				<div v-if="cartItem > 0" class="cart">
-					<p>Items in Cart: {{cartItem}}</p>
 					<div class="cartheader">
 						<p>Item</p>
-						<p>Ammount ordered</p>
-						<p>Price per item</p>
+						<p>Price</p>
+						<p>Quantity</p>						
 						<p>Subtotal</p>
+						<p>Remove One</p>
+						<p>Delete All</p>
 					</div>
-					<div class="cartitem" v-for="item in items">
+					<div class="cartitem" v-for="item in items" v-if="item.ordered > 0">
 						<p>{{item.name}}</p>
-						<p>{{item.ordered}}</p>
 						<p>${{item.price}}</p>
+						<p>{{item.ordered}}</p>						
 						<p>${{item.sub}}</p>
+						<p><button v-on:click="removeThis(item)">Remove</button></p>
+						<p><button v-on:click="deleteThis(item)">Delete</button></p>
 					</div>
+					
+					<p>Items in Cart: {{cartItem}}</p>
+					
 				</div>
 				
 				
@@ -54,27 +65,27 @@
                     cartItem: 0,
 
 					items : [
-						{name: 'Stitch',
-						stock: 5,
+						{name: "Big Malasada",
+						stock: 12,
 						ordered: 0,
-						price: 3.55,
+						price: 3,
 						sub: 0,
-						imgSrc: 'stitch.jpg',
-						description: "Small fluffy alien based in Hawaii"},
-						{name: 'Stitch',
+						imgSrc: "images/malasada.png",
+						description: "The Alola region's local specialty—fried bread. It can be used once to heal all the status conditions of a Pokémon."},
+						{name: "Rage Candy Bar",
 						stock: 3,
 						ordered: 0,
-						price: 4.00,
+						price: 2,
 						sub: 0,
-						imgSrc: 'stitch.jpg',
-						description: "Small fluffy alien based in Hawaii"},
-						{name: 'Stitch',
+						imgSrc: "images/ragecandy.png",
+						description: "Mahogany Town's famous candy. It can be used once to heal all the status conditions of a Pokémon."},
+						{name: "Old Gateau",
 						stock: 10,
 						ordered: 0,
-						price: 5.65,
+						price: 10,
 						sub: 0,
-						imgSrc: 'stitch.jpg',
-						description: "Small fluffy alien based in Hawaii"}
+						imgSrc: "images/gateau.png",
+						description: "The Old Chateau's hidden specialty. It can be used once to heal all the status conditions of a Pokémon."}
 						]
 				},
 				methods : {
@@ -83,6 +94,18 @@
 						this.cartItem++;
 						theItem.ordered++;
 						theItem.sub = theItem.ordered * theItem.price;
+					},
+					removeThis(theItem){
+						theItem.stock++;
+						this.cartItem--;
+						theItem.ordered--;
+						theItem.sub = theItem.ordered * theItem.price;
+					},
+					deleteThis(theItem){
+						theItem.stock += theItem.ordered;
+						this.cartItem = this.cartItem - theItem.ordered;
+						theItem.ordered = 0;
+						theItem.sub = 0;
 					}
 				}
             })
