@@ -48,9 +48,11 @@
 						<p><button v-on:click="removeThis(item)">Remove</button></p>
 						<p><button v-on:click="deleteThis(item)">Delete</button></p>
 					</div>
-					
-					<p>Items in Cart: {{cartItem}}</p>
-					
+					<div class="totals">
+						<p style="display: inline; float: left">Items in Cart: {{cartItem}}</p>
+						<p style="display: inline; float: right">Grand Total: {{grandTotal}}</p>
+						<span class="clearfix"></span>
+					</div>
 				</div>
 				
 				
@@ -63,6 +65,7 @@
                 el: "#app",
                 data: {
                     cartItem: 0,
+					grandTotal: 0,
 
 					items : [
 						{name: "Big Malasada",
@@ -94,16 +97,19 @@
 						this.cartItem++;
 						theItem.ordered++;
 						theItem.sub = theItem.ordered * theItem.price;
+						this.grandTotal += theItem.price;
 					},
 					removeThis(theItem){
 						theItem.stock++;
 						this.cartItem--;
 						theItem.ordered--;
+						this.grandTotal -= theItem.price;
 						theItem.sub = theItem.ordered * theItem.price;
 					},
 					deleteThis(theItem){
 						theItem.stock += theItem.ordered;
 						this.cartItem = this.cartItem - theItem.ordered;
+						this.grandTotal -= theItem.sub;
 						theItem.ordered = 0;
 						theItem.sub = 0;
 					}

@@ -45,3 +45,8 @@ h1{
 	font-size: .85em;
 	border-bottom: 1px solid black;
 }
+.totals{
+	padding-right: 40px;
+	padding-left: 40px;
+	font-weight: bolder;
+}
